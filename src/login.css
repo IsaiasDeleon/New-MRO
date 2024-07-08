@@ -1,0 +1,236 @@
+:root {
+    --primary-color: #F7F9F9;
+    --secundary-color: #04AA6D;
+    --text-color: rgb(80, 78, 78);
+    --title-color: #000;
+    --font-text: Comic Sans MS, Arial, Verdana;
+    --big-font-size: 2rem;
+    --h1-font-size: 1.5rem;
+    --h2-font-size: 1.25rem;
+    --h3-font-size: 1.125rem;
+    --h4-font-size:1.05rem;
+    --normal-font-size: .938rem;
+    --small-font-size: .813rem;
+    --smaller-font-size: .75rem;
+    --color-input: rgb(230, 235, 243);
+  }
+body {
+    background-color: #fdfdfd;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.contenedor {
+    position: absolute;
+    left: 20%;
+    top: 10%;
+    width: 60%;
+    height: 80%;
+    background-color: #fdfdfd;
+    border-radius: 20px;
+    box-shadow:
+        inset 0 -3em 3em rgba(0, 0, 0, 0.1),
+        0 0 0 2px rgb(255, 255, 255),
+        0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+    display: grid;
+    grid-template-columns: 50% 50%;
+    overflow: hidden;
+}
+
+.contentImg {
+    background-color: #303030;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+}
+
+.contentImg picture {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    width: 70%;
+}
+picture img {
+    width:80%
+}
+
+.contentLog {
+    position: relative;
+    text-align: center;
+    background-color: #fff;
+}
+
+.contentLog .form {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    width: 70%;
+}
+
+input {
+    width: 100%;
+    background: #F4F6F7;
+    border: 1px solid #E5E7E9;
+    padding: 7px;
+    border-radius: 5px;
+}
+.switch {
+    font-size: var(--h4-font-size);
+    position: relative;
+    display: inline-block;
+    width: 80%;
+    height: 2em;
+    margin-top: 40px;
+}
+  
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    color: #000;
+    font-weight: 600;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    transition: .4s;
+    
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "Tengo cuenta";
+    height: 90%;
+   
+    width: 48%;
+    left: 2%;
+    border-radius: 5px;
+    background-color: #303030;
+    color: #fff;
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 -1px 0 0 rgba(0, 0, 0, 0.1) inset, 0 -1.31em 1.31em -1.31em rgba(0, 0, 0, 0.3) inset, 0 0 1px 0 rgba(0, 0, 0, 0.1);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+    transition: .4s;
+  }
+  
+  .slider:after {
+    content: "";
+    position: absolute;
+    top: -7px;
+    left: -7px;
+    right: -7px;
+    bottom: -7px;
+    border-radius: 5px;
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.1));
+    z-index: -1;
+  }
+  
+  .switch input:checked + .slider {
+    
+    color: #000;
+  }
+  
+  .switch input:checked + .slider:before {
+    content: "Registrarse";
+    transform: translateX(100%);
+   
+  }
+  
+  .switch input {
+    display: none;
+  }
+
+@media (max-width: 1230px) {
+    .contenedor {
+        left: 10%;
+        width: 80%;
+    }
+}
+
+@media (max-width: 860px) {
+    .contentLog .form {
+        width: 80%;
+    }
+    .switch {
+        font-size: var(--normal-font-size);
+    }
+}
+
+@media (max-width: 769px) {
+    .contenedor {
+        left: 2%;
+        width: 96%;
+    }
+}
+
+@media (max-width: 650px) {
+    .contenedor {
+        display: block;
+        height: 98%;
+        top: 1%;
+       
+    }
+
+    .contentImg {
+        width: 100%;
+        height: 25%;
+    }
+
+    .contentImg picture {
+        width: 50%;
+    }
+    picture img {
+        width:60%
+    }
+    .contentLog {
+        width: 100%;
+        height: 75%;
+    }
+
+    .contentLog .form {
+        width: 90%;
+    }
+    .switch {
+        font-size: var(--h4-font-size);
+    }
+
+}
+
+@media (max-width: 450px) {
+    .contentImg picture {
+        width: 60%;
+    }
+}
+
+@media (max-width: 385px) {
+    .contentImg picture {
+        width: 70%;
+    }
+
+    .contentLog .form {
+        width: 90%;
+    }
+}
+
+@media (max-width: 350px) {
+    .contentImg picture {
+        width: 70%;
+    }
+
+    .contentLog .form {
+        width: 95%;
+    }
+    .switch {
+        font-size: var(--normal-font-size);
+    }
+}
