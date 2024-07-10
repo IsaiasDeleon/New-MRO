@@ -6,7 +6,6 @@ import axios from "axios";
 import { Noti } from "../ui/components/Notificaciones";
 import { EditarPerfil } from "../ui/pages/EditarPerfil";
 import { Navigate, Route, Routes, useNavigate } from "react-router";
-import { MyProducts } from "../ui/pages/myProducts";
 import { Somos } from "../ui/pages/QuienesSomos";
 import { Navigation } from "../ui/components/Nav";
 
@@ -14,15 +13,17 @@ import Dashboard from "../ui/pages/Dashboard";
 import AddNewProduct from "../ui/pages/NewProducts";
 import Footer from "../ui/components/footer";
 import { Productos } from "../ui/pages/Productos";
+import NewUser from "../ui/pages/NewUser";
 
 
 const HTTP = axios.create({
-    baseURL: "http://localhost/Server/Data.php"
+    baseURL: "https://ba-mro.mx/Server/Data.php"
 });
 
 export const AppRoute = () => { 
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
+   
     let idU = user?.id;
     let tipoUser= user?.tipoUser;
     let idEmpresa= user?.Empresa;
@@ -277,12 +278,13 @@ export const AppRoute = () => {
     };
 
     const head2misproductos = (Busiden) => {
-       
         HTTP.post("/head2misproductos", {"idU": idEmpresa, "BusIden": Busiden}).then((response) => {
             setMisProductos(response.data);
-            console.log(response.data)
         });
     };
+    useEffect(() => {
+        head2misproductos("");
+    }, [idEmpresa]);
 
     useEffect(() => {
         if (clickProducto !== undefined) {
@@ -354,13 +356,19 @@ export const AppRoute = () => {
         setElemntsCarrito([]);
     };
 
-    return (
+ return (
         <>
             <Routes>
                 <Route path="Inicio" element={<Inicio data={data} dataNuevos={dataNuevos} dataMasVendidos={dataMasVendidos} handleShowQuickViewModal={handleShowQuickViewModal} setSelectedImage={setSelectedImage} selectedImage={selectedImage} showQuickViewModal={showQuickViewModal} selectedProduct={selectedProduct} handleCloseQuickViewModal={handleCloseQuickViewModal} dataFiltrado={dataFiltrado} setData={setData} NumElementsCarrito={NumElementsCarrito} setMenu={setMenu} NumElementsGustos={NumElementsGustos} ElementsGustos={ElementsGustos} setClickProducto={setClickProducto} acomodoCars={acomodoCars} setAcomodoCards={setAcomodoCards} setFiltros={setFiltros} filtros={filtros} setIdCard2={setIdCard2} setIdCard={setIdCard} />} />
                 <Route path="Productos" element={<Productos data={data} handleShowQuickViewModal={handleShowQuickViewModal} setSelectedImage={setSelectedImage} selectedImage={selectedImage} showQuickViewModal={showQuickViewModal} selectedProduct={selectedProduct} handleCloseQuickViewModal={handleCloseQuickViewModal} dataFiltrado={dataFiltrado} setData={setData} NumElementsCarrito={NumElementsCarrito} setMenu={setMenu} NumElementsGustos={NumElementsGustos} ElementsGustos={ElementsGustos} setClickProducto={setClickProducto} acomodoCars={acomodoCars} setAcomodoCards={setAcomodoCards} setFiltros={setFiltros} filtros={filtros} setIdCard2={setIdCard2} setIdCard={setIdCard} estado={estadoMenu} setEstadoMenu={setEstadoMenu} setValue={setValue} value={value} dataCategrorias={dataCategrorias} dataFiltradoSinCat={dataFiltradoSinCat} ElementsCarrito={ElementsCarrito} />} />
                 <Route path="/*" element={<Navigate to={"Inicio"} />} />
                 <Route path="Somos" element={<Somos setMenu={setMenu}/>} />
+                
+                {
+                    tipoUser === "4" &&(
+                        <Route path="NewUser" element={<NewUser />} />
+                    )
+                }
                 {
                     idU && (
                         <Route path="Perfil" element={<EditarPerfil numArticulos={numArticulos} setMenu={setMenu} />} />
@@ -370,7 +378,9 @@ export const AppRoute = () => {
                     idEmpresa && (
                         <>
                             <Route path="/Dashboard" element={<Dashboard head2misproductos={head2misproductos} misProductos={misProductos}/>} />
-                            <Route path="NewProducts" element={<AddNewProduct imagesArray={imagesArray} setImagenesArray={setImagenesArray} setMenu={setMenu} busquedas={busquedas} />} />
+                            {tipoUser !== "2" && (
+                                <Route path="NewProducts" element={<AddNewProduct imagesArray={imagesArray} setImagenesArray={setImagenesArray} setMenu={setMenu} busquedas={busquedas} />} />
+                            )}
                         </>
                        
                     )
@@ -384,5 +394,6 @@ export const AppRoute = () => {
             
             <Noti notiCarrito={notiCarrito} activeNoti={activeNoti} />
         </>
-    )
+    );
+    
 };

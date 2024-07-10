@@ -12,7 +12,7 @@ import { useFormik } from 'formik';
 
 const URLServer = "http://192.168.100.18:3020/";
 const HTTP = axios.create({
-  baseURL: "http://localhost/Server/Data.php"
+  baseURL: "https://ba-mro.mx/Server/Data.php"
 });
 
 const validationSchema = yup.object().shape({
@@ -180,7 +180,7 @@ const AddNewProduct = ({ setMenu, setImagenesArray, imagesArray, busquedas }) =>
       
       try {
         const response3 = await HTTP.post("/InsertarProducto", AllData);
-        console.log(response3)
+       
         if (response3.data === "Insertado") {
           setNotiCarrito("ArticuloInsertado");
           busquedas();

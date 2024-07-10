@@ -6,7 +6,7 @@ import { Noti } from "../components/Notificaciones";
 const URLServer = "http://192.168.100.18:3020/"
 const HTTP = axios.create({
     //baseURL: "https://ba-mro.mx/Server/Data.php"
-    baseURL: "http://localhost/Server/Data.php"
+    baseURL: "https://ba-mro.mx/Server/Data.php"
 })
 export const Producto = ({setIdCard, setIdCard2, clickProducto, setMenu, setClickProducto}) => {
 

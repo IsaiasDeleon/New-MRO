@@ -7,8 +7,76 @@ import { Noti } from '../components/Notificaciones';
 import Footer from '../components/footer';
 
 const HTTP = axios.create({
-    baseURL: "http://localhost/Server/Data.php"
+    baseURL: "https://ba-mro.mx/Server/Data.php"
+    //baseURL: "http://localhost/Server/Data.php"
 });
+
+const EstadoMunicipioSelector = ({ estado, setEstado, municipio, setMunicipio, label, setNameEstado }) => {
+    const [valuesEstado, setValuesEstado] = useState([]);
+    const [valuesMunicipio, setValuesMunicipio] = useState([]);
+
+    useEffect(() => {
+        getEstados();
+    }, []);
+
+    useEffect(() => {
+        if (estado) {
+            getMunicipios(estado, setValuesMunicipio, setNameEstado);
+        }
+    }, [estado]);
+
+    const getEstados = () => {
+        HTTP.post("/getEstado", { "N": "2" }).then((response) => {
+            setValuesEstado(response.data);
+        });
+    };
+
+    const getMunicipios = (estado, setMunicipios, setNameEstado) => {
+        HTTP.post("/getMunicipio", { "Estado": estado }).then((response) => {
+            setMunicipios(response.data);
+            HTTP.post("/getNameEstado", { "idEstado": estado }).then((response) => {
+                setNameEstado(response.data[0].estado);
+            });
+        });
+    };
+
+    return (
+        <>
+          <Row className="mb-3">
+            <Col md={6}>
+            <Form.Group>
+                <Form.Label>{label} Estado</Form.Label>
+                <Form.Control
+                    as="select"
+                    value={estado}
+                    onChange={(e) => setEstado(e.target.value)}
+                >
+                    {valuesEstado.map((val) => (
+                        <option key={val.id} value={val.id}>{val.estado}</option>
+                    ))}
+                </Form.Control>
+            </Form.Group>
+            </Col>
+            <Col md={6}>
+            <Form.Group>
+                <Form.Label>{label} Municipio</Form.Label>
+                <Form.Control
+                    as="select"
+                    value={municipio}
+                    onChange={(e) => setMunicipio(e.target.value)}
+                >
+                    {valuesMunicipio.map((val) => (
+                        <option key={val.id} value={val.id}>{val.municipio}</option>
+                    ))}
+                </Form.Control>
+            </Form.Group>
+            </Col>
+          </Row>
+            
+           
+        </>
+    );
+};
 
 export const EditarPerfil = ({ numArticulos, setMenu }) => {
     const { user } = useContext(AuthContext);
@@ -25,37 +93,8 @@ export const EditarPerfil = ({ numArticulos, setMenu }) => {
         municipio2, setMunicipio2, compras, elementsCarrito
     } = useFetchData(idU);
 
-    const [valuesEstado, setValueEstado] = useState([]);
-    const [valueMunicipio, setValueMunicipio] = useState([]);
     const [nameEstado, setNameEstado] = useState("");
-    const [nameMunicipio, setNameMunicipio] = useState([]);
-    const [valuesEstado2, setValueEstado2] = useState([]);
-    const [valueMunicipio2, setValueMunicipio2] = useState([]);
     const [nameEstado2, setNameEstado2] = useState("");
-    const [nameMunicipio2, setNameMunicipio2] = useState("");
-
-    useEffect(() => {
-       
-        getEstados();
-        getMunicipios(estado, setValueMunicipio, setNameEstado);
-        getMunicipios(estado2, setValueMunicipio2, setNameEstado2);
-    }, [idU, estado, estado2]);
-
-    const getEstados = () => {
-        HTTP.post("/getEstado", { "N": "2" }).then((response) => {
-            setValueEstado(response.data);
-            setValueEstado2(response.data);
-        });
-    };
-
-    const getMunicipios = (estado, setMunicipios, setNameEstado) => {
-        HTTP.post("/getMunicipio", { "Estado": estado }).then((response) => {
-            setMunicipios(response.data);
-            HTTP.post("/getNameEstado", { "idEstado": estado }).then((response) => {
-                setNameEstado(response.data[0].estado);
-            });
-        });
-    };
 
     const handleInputChange = ({ target }) => {
         const { name, value } = target;
@@ -112,6 +151,7 @@ export const EditarPerfil = ({ numArticulos, setMenu }) => {
             OtraUbiCheck: otraUbiCheck ? 1 : 0, Direccion2: otraUbiCheck ? "" : direccion2, CP2: otraUbiCheck ? "" : cp2, Estado2: otraUbiCheck ? 1 : estado2, Municipio2: otraUbiCheck ? 1 : municipio2
         };
         HTTP.post("/SaveDetailsUser", datos).then((response) => {
+           
             if (response.data === "Actualizado") {
                 setNotiCarrito(response.data);
                 setActiveNoti(true);
@@ -248,7 +288,7 @@ export const EditarPerfil = ({ numArticulos, setMenu }) => {
                                     <strong>Estado:</strong> {nameEstado}
                                 </li>
                                 <li className="mb-3">
-                                    <strong>Municipio:</strong> {nameMunicipio}
+                                    <strong>Municipio:</strong> {municipio}
                                 </li>
                                 <li className="mb-3">
                                     <strong>Dirección:</strong> {direccion}
@@ -317,7 +357,7 @@ export const EditarPerfil = ({ numArticulos, setMenu }) => {
                                     </Row>
                                 )}
                                 <Row className="mb-3">
-                                    <Col md={6}>
+                                    <Col md={4}>
                                         <Form.Group>
                                             <Form.Label>País</Form.Label>
                                             <Form.Control
@@ -330,39 +370,19 @@ export const EditarPerfil = ({ numArticulos, setMenu }) => {
                                             </Form.Control>
                                         </Form.Group>
                                     </Col>
-                                    <Col md={6}>
-                                        <Form.Group>
-                                            <Form.Label>Estado</Form.Label>
-                                            <Form.Control
-                                                as="select"
-                                                name="Estado"
-                                                value={estado}
-                                                onChange={handleInputChange}
-                                            >
-                                                {valuesEstado.map((val) => (
-                                                    <option key={val.id} value={val.id}>{val.estado}</option>
-                                                ))}
-                                            </Form.Control>
-                                        </Form.Group>
+                                    <Col md={8}>
+                                        <EstadoMunicipioSelector
+                                            estado={estado}
+                                            setEstado={setEstado}
+                                            municipio={municipio}
+                                            setMunicipio={setMunicipio}
+                                            label=""
+                                            setNameEstado={setNameEstado}
+                                        />
                                     </Col>
                                 </Row>
                                 <Row className="mb-3">
-                                    <Col md={6}>
-                                        <Form.Group>
-                                            <Form.Label>Municipio</Form.Label>
-                                            <Form.Control
-                                                as="select"
-                                                name='Municipio'
-                                                value={municipio}
-                                                onChange={handleInputChange}
-                                            >
-                                                {valueMunicipio.map((val) => (
-                                                    <option key={val.id} value={val.id}>{val.municipio}</option>
-                                                ))}
-                                            </Form.Control>
-                                        </Form.Group>
-                                    </Col>
-                                    <Col md={6}>
+                                    <Col md={8}>
                                         <Form.Group>
                                             <Form.Label>Dirección</Form.Label>
                                             <Form.Control
@@ -374,9 +394,7 @@ export const EditarPerfil = ({ numArticulos, setMenu }) => {
                                             />
                                         </Form.Group>
                                     </Col>
-                                </Row>
-                                <Row className="mb-3">
-                                    <Col md={6}>
+                                    <Col md={4}>
                                         <Form.Group>
                                             <Form.Label>Código Postal</Form.Label>
                                             <Form.Control
@@ -406,35 +424,28 @@ export const EditarPerfil = ({ numArticulos, setMenu }) => {
                                             Ubicación de Facturación
                                         </Alert>
                                         <Row className="mb-3">
-                                            <Col md={6}>
+                                            <Col md={4}>
                                                 <Form.Group>
-                                                    <Form.Label>Estado</Form.Label>
+                                                    <Form.Label>Facturación País</Form.Label>
                                                     <Form.Control
                                                         as="select"
-                                                        name="Estado2"
-                                                        value={estado2}
-                                                        onChange={handleInputChange}
+                                                        name="Pais"
+                                                        value={pais}
+                                                        disabled
                                                     >
-                                                        {valuesEstado2.map((val) => (
-                                                            <option key={val.id} value={val.id}>{val.estado}</option>
-                                                        ))}
+                                                        <option value="México">México</option>
                                                     </Form.Control>
                                                 </Form.Group>
                                             </Col>
-                                            <Col md={6}>
-                                                <Form.Group>
-                                                    <Form.Label>Municipio</Form.Label>
-                                                    <Form.Control
-                                                        as="select"
-                                                        name='Municipio2'
-                                                        value={municipio2}
-                                                        onChange={handleInputChange}
-                                                    >
-                                                        {valueMunicipio2.map((val) => (
-                                                            <option key={val.id} value={val.id}>{val.municipio}</option>
-                                                        ))}
-                                                    </Form.Control>
-                                                </Form.Group>
+                                            <Col md={8}>
+                                                <EstadoMunicipioSelector
+                                                    estado={estado2}
+                                                    setEstado={setEstado2}
+                                                    municipio={municipio2}
+                                                    setMunicipio={setMunicipio2}
+                                                    label="Facturación"
+                                                    setNameEstado={setNameEstado2}
+                                                />
                                             </Col>
                                         </Row>
                                         <Row className="mb-3">
@@ -491,7 +502,6 @@ export const EditarPerfil = ({ numArticulos, setMenu }) => {
                 </Col>
             </Row>
             <Noti notiCarrito={notiCarrito} activeNoti={activeNoti} />
-            
         </Container>
         <Footer/>
         </main>

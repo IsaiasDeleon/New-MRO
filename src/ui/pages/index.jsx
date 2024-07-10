@@ -10,7 +10,7 @@ import { Noti } from '../components/Notificaciones';
 import Footer from '../components/footer';
 
 const HTTP = axios.create({
-  baseURL: "http://localhost/Server/Data.php"
+  baseURL: "https://ba-mro.mx/Server/Data.php"
 });
 
 export const Inicio = ({ data = [], setData,dataMasVendidos,dataNuevos, NumElementsCarrito = [], dataFiltrado = [], setMenu, ElementsGustos, NumElementsGustos, setClickProducto, acomodoCars, setAcomodoCards, setFiltros, filtros, setIdCard2,handleCloseQuickViewModal,handleShowQuickViewModal,showQuickViewModal,selectedProduct,selectedImage,setSelectedImage }) => {

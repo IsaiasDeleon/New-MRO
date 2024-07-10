@@ -6,7 +6,7 @@ import { Noti } from "./Notificaciones";
 
 const HTTP = axios.create({
     //baseURL: "https://ba-mro.mx/Server/Data.php"
-    baseURL: "http://localhost/Server/Data.php"
+    baseURL: "https://ba-mro.mx/Server/Data.php"
 })
 export const CardMisProductos = ({ id, img, descripcion, estrellas, monto, montoOferta, Stock, Estado, Estatus, nombre = "", Categoria, Oferta, saveOne, Fecha, empresa, Marca, CodigoProveedor, Peso, TempodeEntrega, TempoDdeEntregaAgotado, PDF, almacen, ubiAlma,identificadorA, numParte }) => {
     let O = Oferta === "0" ? false : true;
@@ -200,9 +200,9 @@ export const CardMisProductos = ({ id, img, descripcion, estrellas, monto, monto
                     <h6 className="text-success">Id sistema: <b className="text-dark">{id}</b> </h6>
                     <h6 className="text-success">Id alamcén:<b className="text-dark"> {identificadorA} </b> </h6>
                     <h6 className="text-success">Num. parte:<b className="text-dark"> {numParte} </b> </h6>
-                    <div class="input-div2" onDrop={(e) => inputDivChange(e,id)} >
+                    <div className="input-div2" onDrop={(e) => inputDivChange(e,id)} >
                         <p>Arrastra y suelta tus fotos aquí o <button style={{ "padding": "5px", "background": "#000", "color": "#fff", "borderRadius": "5px" }}>selecciona el archivo</button></p>
-                        <input onChange={() => inputChange(id)} id={`Images${id}`} type="file" class="file Images" multiple="multiple" accept="image/jpeg, image/png, image/jpg" />
+                        <input onChange={() => inputChange(id)} id={`Images${id}`} type="file" className="file Images" multiple="multiple" accept="image/jpeg, image/png, image/jpg" />
                     </div>
                     <br />
                 {

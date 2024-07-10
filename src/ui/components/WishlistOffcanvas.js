@@ -21,7 +21,7 @@ const WishlistOffcanvas = ({ show, handleClose, elemntsGustos, handleAddToCart, 
                                 <div className="d-flex align-items-center">
                                     <img src={`https://ba-mro.mx/Server/Images/${item.img ? item.img.split(',')[0] : 'Box.jpg'}`} alt={item.nombre} className="icon-shape icon-xxl me-3" />
                                     <div>
-                                        <a href="#" onClick={() => handleShowQuickViewModal(item)} className="text-inherit">
+                                        <a onClick={() => handleShowQuickViewModal(item)} className="text-inherit">
                                             <h6 className="mb-0">{item.descripcion}</h6>
                                         </a>
                                     </div>

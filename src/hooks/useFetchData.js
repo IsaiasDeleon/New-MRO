@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const HTTP = axios.create({
-    baseURL: "http://localhost/Server/Data.php"
+    baseURL: "https://ba-mro.mx/Server/Data.php"
 });
 
 export const useFetchData = (idU) => {
@@ -29,6 +29,7 @@ export const useFetchData = (idU) => {
         if (idU) {
             const getD = async () => {
                 const response = await HTTP.post("/getDatosGenerales", { "IdUsuario": idU });
+                console.log(response);
                 const data = response.data[0];
                 if (data) {
                     setNombre(data.Nombre);

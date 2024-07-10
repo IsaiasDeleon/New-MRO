@@ -15,6 +15,7 @@ export const Navigation = ({ dataCategrorias, setFiltros, filtros }) => {
   };
   const { user } = useContext(AuthContext);
   let idU = user?.id;
+  const tipoUser = user?.tipoUser;
   let idEmpresa= user?.Empresa;
   return (
     <Navbar bg="primary" expand="lg" variant="dark" style={{ position: "fixed", top: "65px", width: "100%", background: "#fff", padding: "5px 15px" }}>
@@ -61,17 +62,23 @@ export const Navigation = ({ dataCategrorias, setFiltros, filtros }) => {
                   </NavDropdown.Item>
                 ))}
               </NavDropdown>
-              {
-                idEmpresa &&(
-                  <><Nav.Link as={Link} to="/Dashboard" className="ms-3">
-                  Mis Productos
-                </Nav.Link>
-                <Nav.Link as={Link} to="/NewProducts" className="ms-3">
-                  Agregar producto
-                </Nav.Link></>
-
-                )
-              }
+              {idEmpresa && (
+        <>
+          <Nav.Link as={Link} to="/Dashboard" className="ms-3">
+            Mis Productos
+          </Nav.Link>
+          {tipoUser !== "2" && (
+            <Nav.Link as={Link} to="/NewProducts" className="ms-3">
+              Agregar producto
+            </Nav.Link>
+          )}
+          {tipoUser === "4" && (
+            <Nav.Link as={Link} to="/NewUser" className="ms-3">
+              Agregar un usuario
+            </Nav.Link>
+          )}
+        </>
+      )}
               
             </Nav>
           </Offcanvas.Body>

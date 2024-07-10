@@ -9,7 +9,7 @@ import { Noti } from "../components/Notificaciones";
 const URLServer = "http://192.168.100.18:3020/"
 const HTTP = axios.create({
     //baseURL: "https://ba-mro.mx/Server/Data.php"
-    baseURL: "http://localhost/Server/Data.php"
+    baseURL: "https://ba-mro.mx/Server/Data.php"
 })
 export const NewProduct = ({ setMenu, setImagenesArray, imagesArray,busquedas }) => {
     let id = "New";
@@ -403,9 +403,9 @@ export const NewProduct = ({ setMenu, setImagenesArray, imagesArray,busquedas })
             </div>
             <div className="d-flex divNewProducto " >
                 <div className="imagenesNewProduct">
-                    <div class="input-div" onDrop={(e) => inputDivChange(e)} >
+                    <div className="input-div" onDrop={(e) => inputDivChange(e)} >
                         <p>Arrastra y suelta tus fotos aquí o <button style={{ "padding": "5px", "background": "#000", "color": "#fff", "borderRadius": "5px" }}>selecciona el archivo</button></p>
-                        <input onChange={() => inputChange()} id="Images" name="Images" type="file" class="file" multiple="multiple" accept="image/jpeg, image/png, image/jpg" />
+                        <input onChange={() => inputChange()} id="Images" name="Images" type="file" className="file" multiple="multiple" accept="image/jpeg, image/png, image/jpg" />
                     </div>
                     <br />
                     <output>

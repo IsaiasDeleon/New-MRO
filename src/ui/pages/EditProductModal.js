@@ -8,7 +8,7 @@ import { useFormik } from 'formik';
 import { Noti } from "../components/Notificaciones";
 
 const HTTP = axios.create({
-  baseURL: "http://localhost/Server/Data.php"
+  baseURL: "https://ba-mro.mx/Server/Data.php"
 });
 
 const schema = yup.object().shape({
@@ -107,7 +107,7 @@ const EditProductModal = ({ show, handleClose, product,head2misproductos }) => {
         let AllData = { ...datos, PDF: response.data };
 
         const updateResponse = await HTTP.post("/updateProducto", AllData);
-        console.log(updateResponse)
+       
         if (updateResponse.data === "Actualizado") {
           setNotiCarrito("ArticuloUpdate");
           setActiveNoti(true);
@@ -121,7 +121,7 @@ const EditProductModal = ({ show, handleClose, product,head2misproductos }) => {
       }
     } else {
       const updateResponse = await HTTP.post("/updateProducto", datos);
-      console.log(updateResponse)
+    
       if (updateResponse.data === "Actualizado") {
         setNotiCarrito("ArticuloUpdate");
         setActiveNoti(true);

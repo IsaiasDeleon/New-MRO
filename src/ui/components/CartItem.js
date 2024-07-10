@@ -5,10 +5,10 @@ import axios from "axios";
 import { AuthContext } from '../../auth/AuthContext';
 
 const HTTP = axios.create({
-    //baseURL: "https://ba-mro.mx/Server/Data.php"
-    baseURL: "http://localhost/Server/Data.php"
+    baseURL: "https://ba-mro.mx/Server/Data.php"
+    //baseURL: "http://localhost/Server/Data.php"
 })
-const CartItem = ({ item, onQuantityChange,NumElementsCarrito,ElementsCarrito }) => {
+const CartItem = ({ item, onQuantityChange,NumElementsCarrito,ElementsCarrito,handleShowQuickViewModal }) => {
     const { user } = useContext(AuthContext);
     let idU = user?.id;
     const [notiCarrito, setNotiCarrito] = useState();
@@ -54,7 +54,7 @@ const CartItem = ({ item, onQuantityChange,NumElementsCarrito,ElementsCarrito })
                     <div className="d-flex">
                         <img src={`https://ba-mro.mx/Server/Images/${item.img ? item.img.split(',')[0] : 'Box.jpg'}`} alt={item.nombre} className="icon-shape icon-xxl" />
                         <div className="ms-3">
-                            <a href="../pages/shop-single.html" className="text-inherit">
+                            <a onClick={() => handleShowQuickViewModal(item)}  className="text-inherit">
                                 <h6 className="mb-0">{item.descripcion}</h6>
                             </a>
                             <div className="mt-2 small lh-1">

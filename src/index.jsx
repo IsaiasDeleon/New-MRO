@@ -11,18 +11,11 @@ import "bootstrap/dist/js/bootstrap";
 
 import './index.css';
 import './login.css';
-// import "./estilo/bootstrap-icons.min.css"
-// import "./estilo/feather-icons.css"
 import "./estilo/simplebar.min.css"
-// import "./estilo/slick-theme.css"
 import "./estilo/slick.css"
 import "./estilo/theme.min.css"
 import "./estilo/tiny-slider.css"
 
-// import "./js/theme.min.js"
-// import "./js/jquery.min.js"
-// import "./js/slick-slider.js"
-// import "./js/slick-slider.js"
 
 import { MarketApp } from './MarketApp';
 

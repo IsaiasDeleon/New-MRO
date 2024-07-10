@@ -11,7 +11,7 @@ const CryptoJS = require("crypto-js");
 
 const HTTP = axios.create({
     //baseURL: "https://ba-mro.mx/Server/Data.php"
-    baseURL: "http://localhost/Server/Data.php"
+    baseURL: "https://ba-mro.mx/Server/Data.php"
 });
 
 const clientId = "834174042599-ok7fjvug6opngk4devckt6kgcrc3iclf.apps.googleusercontent.com";
@@ -165,7 +165,7 @@ const UserModal = ({ show, handleClose }) => {
                                 <Form.Control type="password" name="Contrasena" value={pass} placeholder="Introduce tu contraseña" onChange={onInputChange} required />
                             </Form.Group>
                             <div className="d-flex justify-content-between">
-                                <LoginB />
+                                <LoginB handleClose={ handleClose}/>
                                 <Button onClick={(e) => onLogin(e)} className="btn btn-primary">Iniciar sesión</Button>
                             </div>
                         </>
