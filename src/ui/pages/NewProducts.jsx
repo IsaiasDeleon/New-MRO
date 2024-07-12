@@ -35,7 +35,7 @@ const validationSchema = yup.object().shape({
 const AddNewProduct = ({ setMenu, setImagenesArray, imagesArray, busquedas }) => {
   const { user } = useContext(AuthContext);
   let idU = user?.id;
-  let idEmpresa= user?.Empresa;
+  let idEmpresa = user?.Empresa;
   const [check, setCheck] = useState(false);
   const [pdfFile, setPdfFile] = useState(null);
   const [notiCarrito, setNotiCarrito] = useState();
@@ -53,7 +53,7 @@ const AddNewProduct = ({ setMenu, setImagenesArray, imagesArray, busquedas }) =>
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
+    accept: { 'image/jpeg': [], 'image/png': [] },  // Asegúrate de usar los MIME types correctos
     maxFiles: 4,
     onDrop: (acceptedFiles) => {
       if (files.length + acceptedFiles.length > 4) {
@@ -64,7 +64,6 @@ const AddNewProduct = ({ setMenu, setImagenesArray, imagesArray, busquedas }) =>
           ...prevFiles,
           ...acceptedFiles.map(file => Object.assign(file, {
             preview: URL.createObjectURL(file),
-
           }))
         ]);
       }
@@ -72,7 +71,7 @@ const AddNewProduct = ({ setMenu, setImagenesArray, imagesArray, busquedas }) =>
   });
 
   const { getRootProps: getPdfRootProps, getInputProps: getPdfInputProps } = useDropzone({
-    accept: '.pdf',
+    accept: { 'application/pdf': [] },  // Asegúrate de usar los MIME types correctos
     maxFiles: 1,
     onDrop: (acceptedFiles) => {
       if (acceptedFiles.length > 1) {
@@ -84,8 +83,8 @@ const AddNewProduct = ({ setMenu, setImagenesArray, imagesArray, busquedas }) =>
     }
   });
 
-  const handleRemoveFile = (id) => {
-    setFiles(files.filter(file => file.id !== id));
+  const handleRemoveFile = (file) => {
+    setFiles(files.filter(f => f !== file));
   };
 
   const handleRemovePdf = () => {
@@ -192,10 +191,10 @@ const AddNewProduct = ({ setMenu, setImagenesArray, imagesArray, busquedas }) =>
           setFiles([]);
           setPdfFile(null);
           setCheck(false);
-        }else if(response3.data === "Existe"){
-           alert("El producto ya existe")
-        }else{
-            alert("Algo salio mal")
+        } else if (response3.data === "Existe") {
+          alert("El producto ya existe")
+        } else {
+          alert("Algo salio mal")
         }
       } catch (error) {
         console.error(error);
@@ -214,7 +213,7 @@ const AddNewProduct = ({ setMenu, setImagenesArray, imagesArray, busquedas }) =>
   };
 
   const thumbs = files.map(file => (
-    <div key={file.id} style={{ display: 'inline-flex', borderRadius: 2, border: '1px solid #eaeaea', marginBottom: 8, marginRight: 8, width: 100, height: 100, padding: 4, boxSizing: 'border-box', position: 'relative' }}>
+    <div key={file.name} style={{ display: 'inline-flex', borderRadius: 2, border: '1px solid #eaeaea', marginBottom: 8, marginRight: 8, width: 100, height: 100, padding: 4, boxSizing: 'border-box', position: 'relative' }}>
       <div style={{ display: 'flex', minWidth: 0, overflow: 'hidden' }}>
         <img src={file.preview} style={{ display: 'block', width: 'auto', height: '100%' }} alt={file.name} />
       </div>
@@ -222,7 +221,7 @@ const AddNewProduct = ({ setMenu, setImagenesArray, imagesArray, busquedas }) =>
         variant="danger"
         size="sm"
         style={{ position: 'absolute', top: 0, right: 0, padding: '0.2rem' }}
-        onClick={() => handleRemoveFile(file.id)}
+        onClick={() => handleRemoveFile(file)}
       >
         <Trash size={14} />
       </Button>

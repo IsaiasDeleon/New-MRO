@@ -1,64 +1,58 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Offcanvas, Button, ListGroup } from 'react-bootstrap';
 import CartItem from './CartItem';
 import { useNavigate } from 'react-router';
-import { useFetchData } from '../../hooks/useFetchData';
-import { AuthContext } from '../../auth/AuthContext';
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import axios from 'axios';
+
 const HTTP = axios.create({
     baseURL: "https://ba-mro.mx/Server/Data.php"
-    //baseURL: "http://localhost/Server/Data.php"
-  })
+});
+
 const CartOffcanvas = ({ show, handleClose, elemntsCarrito, idU, NumElementsCarrito, ElementsCarrito, handleShowQuickViewModal }) => {
     const [cartItems, setCartItems] = useState([]);
-    
     const [modalOpen, setModalOpen] = useState(false);
+    const [Telefono, setTelefono] = useState("1");
+    const [direccion, setDireccion] = useState("");
+    const [CP, setCP] = useState("");
+    const [estado, setEstado] = useState(1);
+    const [municipio, setMunicipio] = useState(1);
+    const [latitude, setLatitude] = useState(0);
+    const [longitude, setLongitude] = useState(0);
+    const [OtraUbiCheck, setOtraUbiCheck] = useState(true);
+    const [direccion2, setDireccion2] = useState("");
+    const [CP2, setCP2] = useState("");
+    const [estado2, setEstado2] = useState(1);
+    const [municipio2, setMunicipio2] = useState(1);
 
-    
-  const [Telefono, setTelefono] = useState("1");
-  const [direccion, setDireccion] = useState("");
-  const [CP, setCP] = useState("");
-  // const [pais, setPais] = useState("");
-  const [estado, setEstado] = useState(1);
-  const [municipio, setMunicipio] = useState(1);
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
-  const [OtraUbiCheck, setOtraUbiCheck] = useState(true);
-  const [direccion2, setDireccion2] = useState("");
-  const [CP2, setCP2] = useState("");
-  const [estado2, setEstado2] = useState(1);
-  const [municipio2, setMunicipio2] = useState(1);
-    
-  const getD = async () => {
-    let respuesta = await  HTTP.post("/getDatosGenerales2",{"IdUsuario": idU}).then((response) => {
-        return response?.data[0]
-    }) 
-    let respuesta2 = await  HTTP.post("/getDatosGenerales2Facturacion",{"IdUsuario": idU}).then((response) => {
-      return response?.data[0]
-    })
-    if(respuesta2 !== undefined){
-      setDireccion2(respuesta2.Direccion2);
-      setCP2(respuesta2.CP2);
-      setEstado2(respuesta2.estado);
-      setMunicipio2(respuesta2.municipio);
-  }
-    if(respuesta !== undefined){
-        setTelefono(respuesta.telefono);
-        setDireccion(respuesta.Direccion);
-        setCP(respuesta.CP);
-        // setPais("Mexico");
-        setEstado(respuesta.estado);
-        setMunicipio(respuesta.municipio);
-        setLatitude(respuesta.latitude);
-        setLongitude(respuesta.longitude)
-    }
-    
-}
- 
-  useEffect(() => {
-   
-    getD();
-  }, []);
+    const getD = async () => {
+        let respuesta = await HTTP.post("/getDatosGenerales2", { "IdUsuario": idU }).then((response) => {
+            return response?.data[0];
+        });
+        let respuesta2 = await HTTP.post("/getDatosGenerales2Facturacion", { "IdUsuario": idU }).then((response) => {
+            return response?.data[0];
+        });
+        if (respuesta2 !== undefined) {
+            setDireccion2(respuesta2.Direccion2);
+            setCP2(respuesta2.CP2);
+            setEstado2(respuesta2.estado);
+            setMunicipio2(respuesta2.municipio);
+        }
+        if (respuesta !== undefined) {
+            setTelefono(respuesta.telefono);
+            setDireccion(respuesta.Direccion);
+            setCP(respuesta.CP);
+            setEstado(respuesta.estado);
+            setMunicipio(respuesta.municipio);
+            setLatitude(respuesta.latitude);
+            setLongitude(respuesta.longitude);
+        }
+    };
+
+    useEffect(() => {
+        getD();
+    }, []);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -126,13 +120,13 @@ const CartOffcanvas = ({ show, handleClose, elemntsCarrito, idU, NumElementsCarr
                     <div className="flex-grow-1 overflow-auto">
                         <ListGroup variant="flush">
                             {cartItems.map(item => (
-                                <CartItem 
-                                    NumElementsCarrito={NumElementsCarrito} 
-                                    ElementsCarrito={ElementsCarrito} 
-                                    key={item.id} 
-                                    item={item} 
-                                    onQuantityChange={handleQuantityChange} 
-                                    handleShowQuickViewModal={handleShowQuickViewModal} 
+                                <CartItem
+                                    NumElementsCarrito={NumElementsCarrito}
+                                    ElementsCarrito={ElementsCarrito}
+                                    key={item.id}
+                                    item={item}
+                                    onQuantityChange={handleQuantityChange}
+                                    handleShowQuickViewModal={handleShowQuickViewModal}
                                 />
                             ))}
                         </ListGroup>
@@ -158,8 +152,8 @@ const CartOffcanvas = ({ show, handleClose, elemntsCarrito, idU, NumElementsCarr
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={closeModal}></button>
                             </div>
                             <div className="modal-body">
-                                <div className="alert alert-success" role="alert">
-                                    Realice el pago de <b>${totalGlobal.toFixed(3)}</b> al siguiente número de cuenta 123456789098765, por un total de <b>{totalProductos}</b> artículos. Una vez que el proveedor confirme su pago se le enviará su producto. Se le enviará un correo con todos los datos de sus productos y proveedores.
+                                <div className="alert alert-info" role="alert">
+                                    Realice el pago de <b>${totalGlobal.toFixed(3)}</b> a través de PayPal. Se le enviará un correo con todos los datos de sus productos y proveedores, Gracias por su compra.
                                 </div>
                                 {direccion ? (
                                     <>
@@ -230,23 +224,45 @@ const CartOffcanvas = ({ show, handleClose, elemntsCarrito, idU, NumElementsCarr
                                                             <h6 className="text-secondary OpcionesFont">{CP2}</h6>
                                                         </div>
                                                     </div>
+                                                    
                                                 </>
                                             ) : (
                                                 <div className="alert alert-danger text-center" role="alert" onClick={EditarPerfil}>
                                                     La ubicación de facturación no ha sido ingresada, favor de ir a su <b style={{ textDecoration: "underline red", cursor: "pointer" }}>perfil</b> e ingresarla.
                                                 </div>
                                             )
+                                            
                                         )}
                                     </>
                                 ) : (
-                                    <div className="alert alert-primary" role="alert" onClick={EditarPerfil}>
+                                    <div className="alert alert-danger" role="alert" onClick={EditarPerfil}>
                                         Sus datos no han sido proporcionados, le sugerimos que vaya a su <b style={{ textDecoration: "underline red", cursor: "pointer" }}>perfil</b> y los ingrese.
                                     </div>
                                 )}
+<PayPalScriptProvider options={{ "client-id": "AUQ-HLaYkpifs1IJdRKZDY5ueRm0aVYUR_BomYGfeGOH2t7GWAUYJcsIAPvwYVth4C8gluhxu3A2ZctG" }}>
+                                                        <PayPalButtons
+                                                            style={{ layout: 'vertical' }}
+                                                            createOrder={(data, actions) => {
+                                                                return actions.order.create({
+                                                                    purchase_units: [{
+                                                                        amount: {
+                                                                            // value: totalGlobal.toFixed(2),
+                                                                            value: 0.1,
+                                                                        },
+                                                                    }],
+                                                                });
+                                                            }}
+                                                            onApprove={(data, actions) => {
+                                                                return actions.order.capture().then((details) => {
+                                                                    alert('Transaction completed by ' + details.payer.name.given_name);
+                                                                    Comprar(); // Call your purchase function here
+                                                                });
+                                                            }}
+                                                        />
+                                                    </PayPalScriptProvider>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeModal}>Cancelar</button>
-                                <button type="button" onClick={Comprar} className="btn btn-primary" data-bs-dismiss="modal" disabled={!direccion}>Comprar</button>
                             </div>
                         </div>
                     </div>
