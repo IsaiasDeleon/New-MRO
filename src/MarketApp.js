@@ -1,15 +1,13 @@
-import { HashRouter } from "react-router-dom"
-import { AppRoute } from "./routes"
-import { AuthProvider } from "./auth/AuthProvider"
-
-
+import { BrowserRouter } from "react-router-dom";
+import { AppRoute } from "./routes";
+import { AuthProvider } from "./auth/AuthProvider";
 
 export const MarketApp = () => {
     return (
-        <HashRouter>
+        <BrowserRouter>
             <AuthProvider>
                 <AppRoute />
             </AuthProvider>
-        </HashRouter>
-    )
-}
+        </BrowserRouter>
+    );
+};

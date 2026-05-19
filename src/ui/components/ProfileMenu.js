@@ -2,7 +2,7 @@ import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { useContext } from 'react';
 import { AuthContext } from '../../auth/AuthContext';
-import { User } from 'react-feather'; // Asegúrate de importar el ícono User
+import { User } from 'react-feather'; 
 import { Link } from 'react-router-dom';
 
 const ProfileMenu = ({reloadAll}) => {
@@ -14,7 +14,7 @@ const ProfileMenu = ({reloadAll}) => {
     };
 
     return (
-        <Dropdown align="end" style={{ zIndex: "1050" }}> {/* Asegúrate de que el z-index es suficientemente alto */}
+        <Dropdown align="end" style={{ zIndex: "1050" }}> 
             <Dropdown.Toggle variant="link" id="dropdown-basic" className="text-reset" style={{ zIndex: "1051" }}>
                 <User />
             </Dropdown.Toggle>
