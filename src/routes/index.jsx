@@ -60,12 +60,12 @@ export const AppRoute = () => {
     const [showQuickViewModal, setShowQuickViewModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [value, setValue] = useState([0, 20000]);
+    const [value, setValue] = useState([0, 100000]);
     const [filtros, setFiltros] = useState(() => {
         return  {
             Catego: "",
             text: "",
-            value: [0, 20000],
+            value: [0, 100000],
             Oferta: 0,
             Estado: 3,
             Nombre: "",
@@ -279,6 +279,7 @@ export const AppRoute = () => {
 
     const head2misproductos = (Busiden) => {
         HTTP.post("/head2misproductos", {"idU": idEmpresa, "BusIden": Busiden}).then((response) => {
+            console.log(response.data)
             setMisProductos(response.data);
         });
     };

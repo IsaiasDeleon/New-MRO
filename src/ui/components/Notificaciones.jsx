@@ -186,6 +186,9 @@ export const Noti = ({ notiCarrito, activeNoti, ide="" }) => {
     } else if (notiCarrito === "NotUserGustos") {
         message = "Para agregar productos a su lista de deseos deberá iniciar sesión.";
         color = "warning";
+    }else{
+        message = notiCarrito;
+        color = "warning";
     }
     
     useEffect(() => {

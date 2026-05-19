@@ -11,12 +11,18 @@ export const Navigation = ({ dataCategrorias, setFiltros, filtros }) => {
   const handleCloseOffcanvas = () => setShowOffcanvas(false);
 
   const handleCategoryChange = (cat) => {
-    setFiltros({ ...filtros, Catego: cat, Nombre: '' });
+    const newCategory = cat === "Todos" ? "" : cat;
+    setFiltros({ ...filtros, Catego: newCategory, Nombre: '' });
   };
+
   const { user } = useContext(AuthContext);
   let idU = user?.id;
   const tipoUser = user?.tipoUser;
   let idEmpresa= user?.Empresa;
+
+  // Add "Todos" category at the beginning of the list
+  const categories = ["Todos", ...dataCategrorias];
+
   return (
     <Navbar bg="primary" expand="lg" variant="dark" style={{ position: "fixed", top: "65px", width: "100%", background: "#fff", padding: "5px 15px" }}>
       <Container fluid style={{ padding: "0" }}>
@@ -49,7 +55,7 @@ export const Navigation = ({ dataCategrorias, setFiltros, filtros }) => {
                 }
                 id="categories-dropdown"
               >
-                {dataCategrorias?.map((cat) => (
+                {categories?.map((cat) => (
                   <NavDropdown.Item
                     key={cat}
                     as={Link}
@@ -63,23 +69,22 @@ export const Navigation = ({ dataCategrorias, setFiltros, filtros }) => {
                 ))}
               </NavDropdown>
               {idEmpresa && (
-        <>
-          <Nav.Link as={Link} to="/Dashboard" className="ms-3">
-            Mis Productos
-          </Nav.Link>
-          {tipoUser !== "2" && (
-            <Nav.Link as={Link} to="/NewProducts" className="ms-3">
-              Agregar producto
-            </Nav.Link>
-          )}
-          {tipoUser === "4" && (
-            <Nav.Link as={Link} to="/NewUser" className="ms-3">
-              Agregar un usuario
-            </Nav.Link>
-          )}
-        </>
-      )}
-              
+                <>
+                  <Nav.Link as={Link} to="/Dashboard" className="ms-3">
+                    Mis Productos
+                  </Nav.Link>
+                  {tipoUser !== "2" && (
+                    <Nav.Link as={Link} to="/NewProducts" className="ms-3">
+                      Agregar producto
+                    </Nav.Link>
+                  )}
+                  {tipoUser === "4" && (
+                    <Nav.Link as={Link} to="/NewUser" className="ms-3">
+                      Agregar un usuario
+                    </Nav.Link>
+                  )}
+                </>
+              )}
             </Nav>
           </Offcanvas.Body>
         </Navbar.Offcanvas>

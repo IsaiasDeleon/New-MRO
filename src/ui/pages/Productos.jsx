@@ -28,7 +28,13 @@ const normalizeString = (string) => {
   const firstWord = string.split(' ')[0];
   return firstWord.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 };
-
+const formatNumber = (num) => {
+  return num.toLocaleString('es-MX', {
+    style: 'currency',
+    currency: 'MXN',
+    minimumFractionDigits: 2
+  });
+};
 export const Productos = ({ data = [], setData, NumElementsCarrito = [], dataFiltrado = [], setMenu, ElementsGustos, NumElementsGustos, setClickProducto, acomodoCars, setAcomodoCards, setFiltros, filtros, setIdCard2, handleCloseQuickViewModal, handleShowQuickViewModal, showQuickViewModal, selectedProduct, selectedImage, setSelectedImage, estado, setEstadoMenu, setValue, value, dataFiltradoSinCat,ElementsCarrito }) => {
   
   const [filtroCat, setFiltroCat] = useState([]);
@@ -208,7 +214,7 @@ export const Productos = ({ data = [], setData, NumElementsCarrito = [], dataFil
     setFiltros({
       Catego: "",
             text: "",
-            value: [0, 20000],
+            value: [0, 100000],
             Oferta: 0,
             Estado: 3,
             Nombre: ""
@@ -274,14 +280,14 @@ export const Productos = ({ data = [], setData, NumElementsCarrito = [], dataFil
                         value={value}
                         onChange={handleChange}
                         min={1}
-                        max={17000}
+                        max={100000}
                         valueLabelDisplay="on"
                         step={100}
                         getAriaValueText={valuetext}
                         color="primary"
                         onChangeCommitted={handlePriceChangeCommitted}
                       />
-                      <h6 className='text-primary text-slider'>$20,000</h6>
+                      <h6 className='text-primary text-slider'>$100,000</h6>
                     </Stack>
                   </div>
 
@@ -330,14 +336,14 @@ export const Productos = ({ data = [], setData, NumElementsCarrito = [], dataFil
                       value={value}
                       onChange={handleChange}
                       min={1}
-                      max={17000}
+                      max={100000}
                       valueLabelDisplay="on"
                       step={100}
                       getAriaValueText={valuetext}
                       color="primary"
                       onChangeCommitted={handlePriceChangeCommitted}
                     />
-                    <h6 className='text-primary text-slider'>$20,000</h6>
+                    <h6 className='text-primary text-slider'>$100,000</h6>
                   </Stack>
                 </div>
 
@@ -393,12 +399,12 @@ export const Productos = ({ data = [], setData, NumElementsCarrito = [], dataFil
                             <a onClick={() => handleShowQuickViewModal(product)}>
                               <div className="text-center position-relative">
                                 {product.montoOferta > 0 && <Badge bg="danger" className="position-absolute top-0 start-0">Sale</Badge>}
-                                <Card.Img src={imgSrc} style={{ "width": "100%", "height": "200px", "objectFit": "cover" }} alt={product.nombre} className="mb-3 img-fluid" />
+                                <Card.Img src={imgSrc} style={{ "width": "100%", "height": "200px", "objectFit": "cover", "cursor":"pointer" }} alt={product.nombre} className="mb-3 img-fluid" />
                               </div>
                               <div className="text-small mb-1">
                                 <small>{product.Categoria}</small>
                               </div>
-                              <h2 className="fs-6 description">
+                              <h2 className="fs-6 description" style={{ "cursor":"pointer"}}>
                                 {product.descripcion}
                               </h2>
                               <div>
@@ -411,10 +417,11 @@ export const Productos = ({ data = [], setData, NumElementsCarrito = [], dataFil
                               </div>
                             </a>
                             <div className="d-flex justify-content-between align-items-center mt-3">
-                              <div>
-                                <span className="text-dark">${product.monto}</span>
-                                {product.montoOferta > 0 && <span className="text-decoration-line-through text-muted">${product.montoOferta}</span>}
-                              </div>
+                            <div>
+                              <span className="text-dark">{formatNumber(Number(product.monto))}</span>
+                              {product.montoOferta > 0 && <span className="text-decoration-line-through text-muted">{formatNumber(Number(product.montoOferta))}</span>}
+                            </div>
+                             
                               <Button variant="primary" size="sm" onClick={() => handleAddToCart(product.id)}>
                                 <ShoppingCart size={15}/> Carrito
                               </Button>
@@ -477,9 +484,10 @@ export const Productos = ({ data = [], setData, NumElementsCarrito = [], dataFil
                     <span className="ms-2">({selectedProduct.Stock} en stock)</span>
                   </div>
                   <div className="fs-4">
-                    <span className="fw-bold text-dark">${selectedProduct.monto}</span>
-                    {selectedProduct.montoOferta > 0 && <span className="text-decoration-line-through text-muted">${selectedProduct.montoOferta}</span>}
-                  </div>
+                        <span className=" fw-bold text-dark">{formatNumber(Number(selectedProduct.monto))}</span>
+                        {selectedProduct.montoOferta > 0 && <span className="text-decoration-line-through text-muted">{formatNumber(Number(selectedProduct.montoOferta))}</span>}
+                      </div>
+                  
                   <hr className="my-6" />
                   <div>
                   {showAlert && (

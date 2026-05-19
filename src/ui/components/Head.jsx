@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react';
+
+import React, { useContext, useEffect, useState } from 'react';
 import { Container, Row, Col, Navbar, Form, InputGroup, Button, Badge } from 'react-bootstrap';
 import { Search, ShoppingBag, Heart, AlignLeft, User, Bell } from 'react-feather';
 import { AuthContext } from '../../auth/AuthContext';
@@ -8,10 +9,18 @@ import WishlistOffcanvas from './WishlistOffcanvas';
 import ProfileMenu from './ProfileMenu';
 import NotiOofcanvas from './Notioffcanvas';
 import { Link, useNavigate } from 'react-router-dom';
-
+import CryptoJS from 'crypto-js';
+import axios from 'axios';
+import { Noti } from './Notificaciones';
+const secretKey = 'Badger2015';
+const HTTP = axios.create({
+  baseURL: "https://ba-mro.mx/Server/Data.php"
+});
 export const Head = ({ numArticulos, numGustos, elemntsGustos, elemntsCarrito,NumElementsCarrito,numNoti,ElementsCarrito,elemntsNoti,EliminarNotiFicacion,ComprarProductoNoti,reloadAll,handleShowQuickViewModal,setIdCard2,DeleteItemGustos, filtros,setFiltros }) => {
-    const { user } = useContext(AuthContext);
+    const { user, Log } = useContext(AuthContext);
     let idU = user?.id;
+    const [notiCarrito, setNotiCarrito] = useState();
+    const [activeNoti, setActiveNoti] = useState();
     const navigate = useNavigate();
     const [showUserModal, setShowUserModal] = useState(false);
     const [showCart, setShowCart] = useState(false);
@@ -40,6 +49,35 @@ export const Head = ({ numArticulos, numGustos, elemntsGustos, elemntsCarrito,Nu
             replace: true
           });
     };
+    useEffect(() => {
+        // Obtén los parámetros de la URL
+    // Obtén los parámetros de la URL
+    const hash = window.location.hash;
+    const queryString = hash.substring(hash.indexOf('?') + 1);
+    const urlParams = new URLSearchParams(queryString);
+    const encryptedUsername = urlParams.get('username');
+    const encryptedPassword = urlParams.get('password');
+        if (encryptedUsername && encryptedPassword) {
+            try {
+                HTTP.post("/Login", { "user": encryptedUsername, "pass": encryptedPassword }).then((response) => {
+                    if (response.data) {
+                        const data = response.data;
+                        Log(data.Nombre, data.id, data.img, data.tipoUser, 0, true, data.Empresa);
+                        setShowCart(true);
+                        
+                    } else {
+                        setNotiCarrito("UsuarioIncorrecto");
+                        setActiveNoti(true);
+                        setTimeout(() => {
+                            setActiveNoti(false);
+                        }, 5000);
+                    }
+                });
+            } catch (error) {
+                console.error("Error al desencriptar los datos:", error);
+            }
+        }
+    }, []);
     return (
         <>
             <header style={{ position: "fixed", top: 0, width: "100%", background: "#fff" }}>
@@ -140,7 +178,7 @@ export const Head = ({ numArticulos, numGustos, elemntsGustos, elemntsCarrito,Nu
             <CartOffcanvas show={showCart} handleClose={handleCloseCart} elemntsCarrito={elemntsCarrito} idU={idU} ElementsCarrito={ElementsCarrito} NumElementsCarrito={NumElementsCarrito} />
             <WishlistOffcanvas show={showWishlist} handleClose={handleCloseWishlist} elemntsGustos={elemntsGustos} handleShowQuickViewModal={handleShowQuickViewModal} handleAddToCart={handleAddToCart}showAlert={showAlert} DeleteItemGustos={DeleteItemGustos} />
             <NotiOofcanvas show={showNoti} handleClose={handleCloseNoti} elemntsNoti={elemntsNoti} EliminarNotiFicacion={EliminarNotiFicacion} ComprarProductoNoti={ComprarProductoNoti} />
-            
+            <Noti notiCarrito={notiCarrito} activeNoti={activeNoti} />
         </>
     );
 };

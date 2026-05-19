@@ -1,7 +1,13 @@
 import React from 'react';
 import { Offcanvas, Button, ListGroup } from 'react-bootstrap';
 import { Trash2, ShoppingCart, Eye } from 'react-feather';
-
+const formatNumber = (num) => {
+    return num.toLocaleString('es-MX', {
+      style: 'currency',
+      currency: 'MXN',
+      minimumFractionDigits: 2
+    });
+  };
 const NotiOofcanvas = ({ show, handleClose, elemntsNoti,ComprarProductoNoti,EliminarNotiFicacion }) => (
     
     <Offcanvas show={show} onHide={handleClose} placement="end" className="d-flex flex-column">
@@ -26,8 +32,8 @@ const NotiOofcanvas = ({ show, handleClose, elemntsNoti,ComprarProductoNoti,Elim
                                 <div className=" ms-3" style={{ "width": "100%" }}>
                     <p className="text-secondary OpcionesFont"  style={{ "whiteSpace": "normal","margin":"0px" }} >El proveedor: <b className="text-dark OpcionesFont">BA-MRO</b>, realizo una contra oferta del producto: <b className="text-dark OpcionesFont">{item.descripcion}</b> </p>
                    
-                       
-                        <h6> Contra oferta: <b className="text-success">${item.ContraOferta}</b></h6>
+                   
+                        <h6> Contra oferta: <b className="text-success"> {formatNumber(Number(item.ContraOferta))}</b></h6>
                             {/* {
                                 Oferta == 1 ? <h5> OFERTA: <b className="text-success">${montoOferta} </b></h5> : <></>
                             } */}
