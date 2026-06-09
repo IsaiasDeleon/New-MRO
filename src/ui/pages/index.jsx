@@ -10,7 +10,7 @@ import { Noti } from '../components/Notificaciones';
 import Footer from '../components/footer';
 
 const HTTP = axios.create({
-  baseURL: "https://ba-mro.mx/Server/Data.php"
+  baseURL: "https://badgercore.cloud/MRO/Server/Data.php"
 });
 
 export const Inicio = ({ data = [], setData,dataMasVendidos,dataNuevos, NumElementsCarrito = [], dataFiltrado = [], setMenu, ElementsGustos, NumElementsGustos, setClickProducto, acomodoCars, setAcomodoCards, setFiltros, filtros, setIdCard2,handleCloseQuickViewModal,handleShowQuickViewModal,showQuickViewModal,selectedProduct,selectedImage,setSelectedImage }) => {
@@ -54,7 +54,7 @@ export const Inicio = ({ data = [], setData,dataMasVendidos,dataNuevos, NumEleme
   };
 
   const handleCreateOffer = () => {
-    fetch(`https://ba-mro.mx/Server/Correo.php?IP=${selectedProduct.id}&IU=${idU}&Oferta=${offerValue}`)
+    fetch(`https://badgercore.cloud/MRO/Server/Correo.php?IP=${selectedProduct.id}&IU=${idU}&Oferta=${offerValue}`)
       .then(response => {
         setNotiCarrito("CorreoEnviado");
         setActiveNoti(true);
@@ -69,7 +69,7 @@ export const Inicio = ({ data = [], setData,dataMasVendidos,dataNuevos, NumEleme
   };
 
   const handleCreatePDF = () => {
-    window.open(`https://ba-mro.mx/Server/PDF.php?IP=${selectedProduct.id}&IU=${idU}`, '_blank');
+    window.open(`https://badgercore.cloud/MRO/Server/PDF.php?IP=${selectedProduct.id}&IU=${idU}`, '_blank');
   };
 
   const responsive = {
@@ -124,7 +124,7 @@ export const Inicio = ({ data = [], setData,dataMasVendidos,dataNuevos, NumEleme
     localStorage.setItem('AcomodoCards', JSON.stringify(acomodoCars));
   }, [acomodoCars]);
   const handleDownload = (PDF) => {
-     window.open(`https://ba-mro.mx/Server/PDF/${PDF}`, '_blank');
+     window.open(`https://badgercore.cloud/MRO/Server/PDF/${PDF}`, '_blank');
   }
   const formatNumber = (num) => {
     return num.toLocaleString('es-MX', {
@@ -164,7 +164,7 @@ export const Inicio = ({ data = [], setData,dataMasVendidos,dataNuevos, NumEleme
           </Row>
           <Carousel responsive={responsive} infinite={true} autoPlay={true} autoPlaySpeed={3000} keyBoardControl={true} customTransition="all .5" transitionDuration={500}>
             {dataMasVendidos.slice(0, 10).map(product => {
-                    const imgSrc = product.img ? `https://ba-mro.mx/Server/Images/${product.img.split(',')[0]}` : 'https://ba-mro.mx/Server/Images/Box.jpg';
+                    const imgSrc = product.img ? `https://badgercore.cloud/MRO/Server/Images/${product.img.split(',')[0]}` : 'https://badgercore.cloud/MRO/Server/Images/Box.jpg';
                     return(
               <div key={product.id} className="item">
                 <Card className="card-product m-2">
@@ -217,7 +217,7 @@ export const Inicio = ({ data = [], setData,dataMasVendidos,dataNuevos, NumEleme
           </Row>
           <Carousel responsive={responsive} infinite={true} autoPlay={true} autoPlaySpeed={3000} keyBoardControl={true} customTransition="all .5" transitionDuration={500}>
             {dataNuevos.slice(-10).map(product => {
-                    const imgSrc = product.img ? `https://ba-mro.mx/Server/Images/${product.img.split(',')[0]}` : 'https://ba-mro.mx/Server/Images/Box.jpg';
+                    const imgSrc = product.img ? `https://badgercore.cloud/MRO/Server/Images/${product.img.split(',')[0]}` : 'https://badgercore.cloud/MRO/Server/Images/Box.jpg';
                     return(
               <div key={product.id} className="item">
                 <Card className="card-product m-2">
@@ -270,14 +270,14 @@ export const Inicio = ({ data = [], setData,dataMasVendidos,dataNuevos, NumEleme
             <Row>
               <Col lg={6} className="d-flex flex-column align-items-center">
                 <div className="product productModal">
-                  <div className="zoom" style={{ backgroundImage: `url(https://ba-mro.mx/Server/Images/${selectedImage})` }}>
-                    <img src={`https://ba-mro.mx/Server/Images/${selectedImage}`} alt="" style={{ width: '100%' }} />
+                  <div className="zoom" style={{ backgroundImage: `url(https://badgercore.cloud/MRO/Server/Images/${selectedImage})` }}>
+                    <img src={`https://badgercore.cloud/MRO/Server/Images/${selectedImage}`} alt="" style={{ width: '100%' }} />
                   </div>
                 </div>
                 {selectedProduct.img && (
                   <div style={{ display: "flex", flexDirection: "column", position: "absolute", zIndex: "1", left: "60px" }}>
                     {selectedProduct.img.split(',').map((imgSrc, index) => (
-                      <img key={index} src={`https://ba-mro.mx/Server/Images/${imgSrc}`} onClick={() => setSelectedImage(imgSrc)} alt="IMGCompra" className={`m-1 imagenesProductos ${selectedImage === imgSrc ? "BorderImagenSelect" : ""}`} />
+                      <img key={index} src={`https://badgercore.cloud/MRO/Server/Images/${imgSrc}`} onClick={() => setSelectedImage(imgSrc)} alt="IMGCompra" className={`m-1 imagenesProductos ${selectedImage === imgSrc ? "BorderImagenSelect" : ""}`} />
                     ))}
                   </div>
                 )}

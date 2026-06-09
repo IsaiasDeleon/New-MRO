@@ -14,7 +14,7 @@ import axios from 'axios';
 import { Noti } from './Notificaciones';
 const secretKey = 'Badger2015';
 const HTTP = axios.create({
-  baseURL: "https://ba-mro.mx/Server/Data.php"
+  baseURL: "https://badgercore.cloud/MRO/Server/Data.php"
 });
 export const Head = ({ numArticulos, numGustos, elemntsGustos, elemntsCarrito,NumElementsCarrito,numNoti,ElementsCarrito,elemntsNoti,EliminarNotiFicacion,ComprarProductoNoti,reloadAll,handleShowQuickViewModal,setIdCard2,DeleteItemGustos, filtros,setFiltros }) => {
     const { user, Log } = useContext(AuthContext);

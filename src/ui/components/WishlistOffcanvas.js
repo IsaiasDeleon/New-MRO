@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Offcanvas, Button, ListGroup, Alert, Badge } from 'react-bootstrap';
 import { Trash2, ShoppingCart, Eye, Heart, Package } from 'react-feather';
 
-const IMAGE_BASE_URL = 'https://ba-mro.mx/Server/Images/';
+const IMAGE_BASE_URL = 'https://badgercore.cloud/MRO/Server/Images/';
 const DEFAULT_IMAGE = 'Box.jpg';
 
 const styles = {

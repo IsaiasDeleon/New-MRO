@@ -22,7 +22,7 @@ export const CardGustos = ({ id, img, descripcion, monto, DeleteItemGustos, setC
         <li>
             <div className="align-items-center FilaCarritoItem d-flex" style={{ "padding": "4px" }}>
                 <div >
-                    <img onClick={() => ProductoShow(id)} src={`https://ba-mro.mx/Server/Images/${imagenes}`} alt="IMGCompra" className="GustosIMG" />
+                    <img onClick={() => ProductoShow(id)} src={`https://badgercore.cloud/MRO/Server/Images/${imagenes}`} alt="IMGCompra" className="GustosIMG" />
                 </div>
                 <div className=" ms-3" style={{ "width": "100%" }}>
                     <p className="text-secondary OpcionesFont" onClick={() => ProductoShow(id)} style={{ "whiteSpace": "normal" }} > {descripcion} </p>

@@ -10,7 +10,7 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 
 const HTTP = axios.create({
-  baseURL: "https://ba-mro.mx/Server/Data.php",
+  baseURL: "https://badgercore.cloud/MRO/Server/Data.php",
   timeout: 90000
 });
 

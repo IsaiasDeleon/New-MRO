@@ -30,7 +30,7 @@ import axios from 'axios';
 const ITEMS_PER_PAGE = 10;
 
 const HTTP = axios.create({
-  baseURL: "https://ba-mro.mx/Server/Data.php",
+  baseURL: "https://badgercore.cloud/MRO/Server/Data.php",
   timeout: 90000
 });
 
@@ -56,8 +56,8 @@ const getFirstImage = (product) => {
   const firstImage = String(product?.img ?? '').split(',')[0].trim();
 
   return firstImage
-    ? `https://ba-mro.mx/Server/Images/${firstImage}`
-    : 'https://ba-mro.mx/Server/Images/Box.jpg';
+    ? `https://badgercore.cloud/MRO/Server/Images/${firstImage}`
+    : 'https://badgercore.cloud/MRO/Server/Images/Box.jpg';
 };
 
 const getProductStatus = (product) => {
@@ -550,7 +550,7 @@ const MainContent = ({
                                         objectFit: 'cover'
                                       }}
                                       onError={(e) => {
-                                        e.currentTarget.src = 'https://ba-mro.mx/Server/Images/Box.jpg';
+                                        e.currentTarget.src = 'https://badgercore.cloud/MRO/Server/Images/Box.jpg';
                                       }}
                                     />
                                   </div>

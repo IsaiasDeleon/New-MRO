@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 
-const IMAGE_BASE_URL = 'https://ba-mro.mx/Server/Images/';
+const IMAGE_BASE_URL = 'https://badgercore.cloud/MRO/Server/Images/';
 const DEFAULT_IMAGE = 'Box.jpg';
 
 const styles = {

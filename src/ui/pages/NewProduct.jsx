@@ -8,8 +8,8 @@ import axios from "axios";
 import { Noti } from "../components/Notificaciones";
 const URLServer = "http://192.168.100.18:3020/"
 const HTTP = axios.create({
-    //baseURL: "https://ba-mro.mx/Server/Data.php"
-    baseURL: "https://ba-mro.mx/Server/Data.php"
+    //baseURL: "https://badgercore.cloud/MRO/Server/Data.php"
+    baseURL: "https://badgercore.cloud/MRO/Server/Data.php"
 })
 export const NewProduct = ({ setMenu, setImagenesArray, imagesArray,busquedas }) => {
     let id = "New";

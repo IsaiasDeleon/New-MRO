@@ -6,7 +6,7 @@ import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import axios from 'axios';
 
 const HTTP = axios.create({
-    baseURL: 'https://ba-mro.mx/Server/Data.php'
+    baseURL: 'https://badgercore.cloud/MRO/Server/Data.php'
 });
 
 const PAYPAL_CLIENT_ID =
@@ -560,7 +560,7 @@ const CartOffcanvas = ({
         if (!idU || cartIsEmpty) return;
 
         window.open(
-            `https://ba-mro.mx/Server/Script.php?IP=${idsString}&IU=${idU}&cantidades=${cantidadesString}`,
+            `https://badgercore.cloud/MRO/Server/Script.php?IP=${idsString}&IU=${idU}&cantidades=${cantidadesString}`,
             '_blank'
         );
     };
@@ -594,7 +594,7 @@ const CartOffcanvas = ({
         });
 
         window.open(
-            `https://ba-mro.mx/Server/CorreoComprasCarrito.php?${params.toString()}`,
+            `https://badgercore.cloud/MRO/Server/CorreoComprasCarrito.php?${params.toString()}`,
             '_blank'
         );
     };

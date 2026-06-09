@@ -18,7 +18,7 @@ export const CardNoti = ({ id, img, descripcion, monto, EliminarNotiFicacion,emp
         <li>
             <div className="align-items-center FilaCarritoItem d-flex" style={{ "padding": "4px" }}>
                 <div style={{"minWidth":"100px","maxWidth":"100px","textAlign":"center"}}>
-                    <img src={`https://ba-mro.mx/Server/Images/${imagenes}`} alt="IMGCompra" className="GustosIMG" />
+                    <img src={`https://badgercore.cloud/MRO/Server/Images/${imagenes}`} alt="IMGCompra" className="GustosIMG" />
                 </div>
                 <div className=" ms-3" style={{ "width": "100%" }}>
                     <p className="text-secondary OpcionesFont"  style={{ "whiteSpace": "normal","margin":"0px" }} >El proveedor: <b className="text-dark OpcionesFont">BA-MRO</b>, realizo una contra oferta del producto: <b className="text-dark OpcionesFont">{descripcion}</b> </p>

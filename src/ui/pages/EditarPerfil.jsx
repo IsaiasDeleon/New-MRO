@@ -19,12 +19,12 @@ import { Noti } from '../components/Notificaciones';
 import Footer from '../components/footer';
 
 const HTTP = axios.create({
-    baseURL: 'https://ba-mro.mx/Server/Data.php'
+    baseURL: 'https://badgercore.cloud/MRO/Server/Data.php'
     // baseURL: "http://localhost/Server/Data.php"
 });
 
-const DEFAULT_USER_IMAGE = 'https://ba-mro.mx/Server/Images/Ge.jpg';
-const IMAGE_BASE_URL = 'https://ba-mro.mx/Server/ImagesUser/';
+const DEFAULT_USER_IMAGE = 'https://badgercore.cloud/MRO/Server/Images/Ge.jpg';
+const IMAGE_BASE_URL = 'https://badgercore.cloud/MRO/Server/ImagesUser/';
 
 const styles = {
     page: {

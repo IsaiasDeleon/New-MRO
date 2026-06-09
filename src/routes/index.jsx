@@ -17,7 +17,7 @@ import NewUser from "../ui/pages/NewUser";
 
 
 const HTTP = axios.create({
-    baseURL: "https://ba-mro.mx/Server/Data.php"
+    baseURL: "https://badgercore.cloud/MRO/Server/Data.php"
 });
 
 export const AppRoute = () => { 

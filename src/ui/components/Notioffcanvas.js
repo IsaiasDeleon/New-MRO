@@ -22,7 +22,7 @@ const NotiOofcanvas = ({ show, handleClose, elemntsNoti,ComprarProductoNoti,Elim
                         <ListGroup.Item key={item.id} className="py-3 ps-0 border-top">
                             <div className="d-flex justify-content-between align-items-center">
                                 <div className="d-flex align-items-center">
-                                    <img src={`https://ba-mro.mx/Server/Images/${item.img ? item.img.split(',')[0] : 'Box.jpg'}`} alt={item.nombre} className="icon-shape icon-xxl me-3" />
+                                    <img src={`https://badgercore.cloud/MRO/Server/Images/${item.img ? item.img.split(',')[0] : 'Box.jpg'}`} alt={item.nombre} className="icon-shape icon-xxl me-3" />
                                     <div>
                                         
                                     </div>

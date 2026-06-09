@@ -17,7 +17,7 @@ import { useFormik } from 'formik';
 import { Noti } from "../components/Notificaciones";
 
 const HTTP = axios.create({
-  baseURL: "https://ba-mro.mx/Server/Data.php",
+  baseURL: "https://badgercore.cloud/MRO/Server/Data.php",
   timeout: 90000
 });
 
@@ -1066,7 +1066,7 @@ const EditProductModal = ({ show, handleClose, product, head2misproductos }) => 
           id: index,
           existing: true,
           name: img,
-          preview: `https://ba-mro.mx/Server/Images/${img}`
+          preview: `https://badgercore.cloud/MRO/Server/Images/${img}`
         }));
 
       setFiles(imageFiles);
@@ -1078,7 +1078,7 @@ const EditProductModal = ({ show, handleClose, product, head2misproductos }) => 
       setPdfFile({
         name: product.PDF,
         existing: true,
-        preview: `https://ba-mro.mx/Server/PDFs/${product.PDF}`
+        preview: `https://badgercore.cloud/MRO/Server/PDFs/${product.PDF}`
       });
     } else {
       setPdfFile(null);

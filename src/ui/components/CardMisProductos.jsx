@@ -5,8 +5,8 @@ import { useForm } from "../../hooks/useForm"
 import { Noti } from "./Notificaciones";
 
 const HTTP = axios.create({
-    //baseURL: "https://ba-mro.mx/Server/Data.php"
-    baseURL: "https://ba-mro.mx/Server/Data.php"
+    //baseURL: "https://badgercore.cloud/MRO/Server/Data.php"
+    baseURL: "https://badgercore.cloud/MRO/Server/Data.php"
 })
 export const CardMisProductos = ({ id, img, descripcion, estrellas, monto, montoOferta, Stock, Estado, Estatus, nombre = "", Categoria, Oferta, saveOne, Fecha, empresa, Marca, CodigoProveedor, Peso, TempodeEntrega, TempoDdeEntregaAgotado, PDF, almacen, ubiAlma,identificadorA, numParte }) => {
     let O = Oferta === "0" ? false : true;
@@ -210,7 +210,7 @@ export const CardMisProductos = ({ id, img, descripcion, estrellas, monto, monto
                     imagenes?.map((image, index) => (
                         image !== "" ?(
                             <div style={{"width":"47%","display":"inline-block","border":"2px dashed #D7DBDD","margin":"3px"}} className="image" key={index}>
-                            <img src={`https://ba-mro.mx/Server/Images/${image}`} alt="IMGCompra"  className="ImgMisProductos" />
+                            <img src={`https://badgercore.cloud/MRO/Server/Images/${image}`} alt="IMGCompra"  className="ImgMisProductos" />
                             <i style={{"float":"right","margin":"0"}} onClick={(e) => deleteImage(e, image, id)} className="bi bi-trash-fill h4"></i>
                         </div>
                         ):(

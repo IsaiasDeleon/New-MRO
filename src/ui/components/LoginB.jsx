@@ -6,8 +6,8 @@ import { useNavigate } from "react-router";
 const clientId = "834174042599-ok7fjvug6opngk4devckt6kgcrc3iclf.apps.googleusercontent.com";
 
 const HTTP = axios.create({
-    //baseURL: "https://ba-mro.mx/Server/Data.php"
-    baseURL: "https://ba-mro.mx/Server/Data.php"
+    //baseURL: "https://badgercore.cloud/MRO/Server/Data.php"
+    baseURL: "https://badgercore.cloud/MRO/Server/Data.php"
 })
 function LoginB ({ handleClose}) {
     const { Log } = useContext(AuthContext); 

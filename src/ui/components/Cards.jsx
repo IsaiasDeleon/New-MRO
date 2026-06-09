@@ -23,7 +23,7 @@ export const Card = ({ id, img, empresa, descripcion, estrellas, monto,Stock, se
             <h6 style={{"position":"absolute","left":"10px","top":"10px"}} className={`fw-bold ${Estado === "1" ? "text-success" :"text-primary"} `}>{Estado === "1" ? "Nuevo" : "Semi-Nuevo"}</h6>
             <h6 style={{"position":"absolute","right":"10px","top":"10px"}} className={`fw-bold text-secondary `}>Stock: {Stock}</h6>
             <div className="text-center divImgMT">
-                    <img src={`https://ba-mro.mx/Server/Images/${imagenes}`} onClick={() => ProductoShow(id)} alt="IMGCompra" className="ImgCard" />
+                    <img src={`https://badgercore.cloud/MRO/Server/Images/${imagenes}`} onClick={() => ProductoShow(id)} alt="IMGCompra" className="ImgCard" />
             </div>
             <div className="content-txt TextCard">
                 <div className="TextCardSeccion" >

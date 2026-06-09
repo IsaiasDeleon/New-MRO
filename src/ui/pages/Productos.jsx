@@ -41,10 +41,10 @@ import { Link } from 'react-router-dom';
 import Footer from '../components/footer';
 
 const HTTP = axios.create({
-    baseURL: 'https://ba-mro.mx/Server/Data.php'
+    baseURL: 'https://badgercore.cloud/MRO/Server/Data.php'
 });
 
-const IMAGE_BASE_URL = 'https://ba-mro.mx/Server/Images/';
+const IMAGE_BASE_URL = 'https://badgercore.cloud/MRO/Server/Images/';
 const DEFAULT_IMAGE = 'Box.jpg';
 
 const styles = {
@@ -868,7 +868,7 @@ export const Productos = ({
         if (!selectedProduct?.id || !idU || !offerValue) return;
 
         fetch(
-            `https://ba-mro.mx/Server/Correo.php?IP=${selectedProduct.id}&IU=${idU}&Oferta=${offerValue}`
+            `https://badgercore.cloud/MRO/Server/Correo.php?IP=${selectedProduct.id}&IU=${idU}&Oferta=${offerValue}`
         )
             .then(() => {
                 setNotiCarrito('CorreoEnviado');
@@ -899,7 +899,7 @@ export const Productos = ({
         }
 
         window.open(
-            `https://ba-mro.mx/Server/PDF.php?IP=${selectedProduct.id}&IU=${idU}`,
+            `https://badgercore.cloud/MRO/Server/PDF.php?IP=${selectedProduct.id}&IU=${idU}`,
             '_blank'
         );
     };

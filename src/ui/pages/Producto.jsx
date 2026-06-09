@@ -5,8 +5,8 @@ import axios from "axios";
 import { Noti } from "../components/Notificaciones";
 const URLServer = "http://192.168.100.18:3020/"
 const HTTP = axios.create({
-    //baseURL: "https://ba-mro.mx/Server/Data.php"
-    baseURL: "https://ba-mro.mx/Server/Data.php"
+    //baseURL: "hhttps://badgercore.cloud/MRO/Server/Data.php"
+    baseURL: "hhttps://badgercore.cloud/MRO/Server/Data.php"
 })
 export const Producto = ({setIdCard, setIdCard2, clickProducto, setMenu, setClickProducto}) => {
 
@@ -61,7 +61,7 @@ export const Producto = ({setIdCard, setIdCard2, clickProducto, setMenu, setClic
         }
     },[clickProducto]);
     function createMail(){
-        fetch(`https://ba-mro.mx/Server/Correo.php?IP=${clickProducto}&IU=${idU}&Oferta=${valueOferta}`)
+        fetch(`hhttps://badgercore.cloud/MRO/Server/Correo.php?IP=${clickProducto}&IU=${idU}&Oferta=${valueOferta}`)
             .then(response => {
                 setNotiCarrito("CorreoEnviado")
                 setActiveNoti(true)
@@ -75,7 +75,7 @@ export const Producto = ({setIdCard, setIdCard2, clickProducto, setMenu, setClic
             });
 
 
-        // window.open(`https://ba-mro.mx/Server/Correo.php?IP=${clickProducto}&IU=${idU}&Oferta=${valueOferta}`, '_blank');
+        // window.open(`hhttps://badgercore.cloud/MRO/Server/Correo.php?IP=${clickProducto}&IU=${idU}&Oferta=${valueOferta}`, '_blank');
              
  
     }
@@ -90,12 +90,12 @@ export const Producto = ({setIdCard, setIdCard2, clickProducto, setMenu, setClic
     }
        
     function CreatePDF(){
-        window.open(`https://ba-mro.mx/Server/PDF.php?IP=${clickProducto}&IU=${idU}`, '_blank');
+        window.open(`hhttps://badgercore.cloud/MRO/Server/PDF.php?IP=${clickProducto}&IU=${idU}`, '_blank');
     }
     
     const handleDownload = () => {
         if(datosProducto?.[0]?.PDF){
-            window.open(`https://ba-mro.mx/Server/PDF/${datosProducto?.[0]?.PDF}`, '_blank');
+            window.open(`hhttps://badgercore.cloud/MRO/Server/PDF/${datosProducto?.[0]?.PDF}`, '_blank');
         }
         
         // axios.post(URLServer+'download',{
@@ -122,11 +122,11 @@ export const Producto = ({setIdCard, setIdCard2, clickProducto, setMenu, setClic
                     <div  style={{"display": "flex","flexDirection": "column", "position":"absolute", "zIndex":"1"}}>
                     {
                         arregloImages.map((data) => (
-                            <img src={`https://ba-mro.mx/Server/Images/${data}`} onClick={(e) => {setImagenes(`${data}`); setOnClickImagen(`${data}`)}} alt="IMGCompra" className={`m-1 imagenesProductos ${`${onClickImagen}` === `${data}` ? "BorderImagenSelect":"" }`}  />
+                            <img src={`hhttps://badgercore.cloud/MRO/Server/Images/${data}`} onClick={(e) => {setImagenes(`${data}`); setOnClickImagen(`${data}`)}} alt="IMGCompra" className={`m-1 imagenesProductos ${`${onClickImagen}` === `${data}` ? "BorderImagenSelect":"" }`}  />
                         ))
                     }
                     </div>
-                    <img src={`https://ba-mro.mx/Server/Images/${imagenes}`} alt="IMGCompra" className="ProductoImg" />
+                    <img src={`hhttps://badgercore.cloud/MRO/Server/Images/${imagenes}`} alt="IMGCompra" className="ProductoImg" />
                 </div>
                 <div className="mt-2">
                     <h4>{datosProducto?.[0]?.descripcion}</h4>

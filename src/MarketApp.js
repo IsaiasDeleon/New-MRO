@@ -4,7 +4,7 @@ import { AuthProvider } from "./auth/AuthProvider";
 
 export const MarketApp = () => {
     return (
-        <BrowserRouter>
+        <BrowserRouter basename="/MRO">
             <AuthProvider>
                 <AppRoute />
             </AuthProvider>
