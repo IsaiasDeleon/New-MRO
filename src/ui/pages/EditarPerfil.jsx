@@ -10,7 +10,8 @@ import {
     Alert,
     Spinner,
     Badge,
-    InputGroup
+    InputGroup,
+    Modal
 } from 'react-bootstrap';
 
 import { AuthContext } from '../../auth/AuthContext';
@@ -143,20 +144,22 @@ const EstadoMunicipioSelector = ({
             if (setNameEstado) setNameEstado('');
         }
     }, [estado]);
+
     useEffect(() => {
         if (!municipio || valuesMunicipio.length === 0) {
             if (setNameMunicipio) setNameMunicipio('');
             return;
         }
-    
+
         const municipioEncontrado = valuesMunicipio.find(
             (item) => String(item.id) === String(municipio)
         );
-    
+
         if (setNameMunicipio) {
             setNameMunicipio(municipioEncontrado?.municipio || '');
         }
     }, [municipio, valuesMunicipio, setNameMunicipio]);
+
     const getEstados = async () => {
         try {
             setLoadingEstados(true);
@@ -201,6 +204,7 @@ const EstadoMunicipioSelector = ({
                     <Form.Label className="fw-semibold">
                         {label ? `${label} Estado` : 'Estado'}
                     </Form.Label>
+
                     <Form.Select
                         value={estado || ''}
                         onChange={(e) => setEstado(e.target.value)}
@@ -225,17 +229,18 @@ const EstadoMunicipioSelector = ({
                     <Form.Label className="fw-semibold">
                         {label ? `${label} Municipio` : 'Municipio'}
                     </Form.Label>
+
                     <Form.Select
                         value={municipio || ''}
                         onChange={(e) => {
                             const selectedId = e.target.value;
-                        
+
                             setMunicipio(selectedId);
-                        
+
                             const selectedMunicipio = valuesMunicipio.find(
                                 (item) => String(item.id) === String(selectedId)
                             );
-                        
+
                             if (setNameMunicipio) {
                                 setNameMunicipio(selectedMunicipio?.municipio || '');
                             }
@@ -278,9 +283,21 @@ export const EditarPerfil = ({ numArticulos, setMenu }) => {
     const [nameEstado, setNameEstado] = useState('');
     const [nameEstado2, setNameEstado2] = useState('');
     const [nameMunicipio, setNameMunicipio] = useState('');
-const [nameMunicipio2, setNameMunicipio2] = useState('');
+    const [nameMunicipio2, setNameMunicipio2] = useState('');
 
     const [errors, setErrors] = useState({});
+
+    const [showSellerModal, setShowSellerModal] = useState(false);
+    const [sendingSellerRequest, setSendingSellerRequest] = useState(false);
+    const [sellerErrors, setSellerErrors] = useState({});
+
+    const [sellerForm, setSellerForm] = useState({
+        empresa: '',
+        telefono: '',
+        correo: '',
+        rfc: '',
+        comentarios: ''
+    });
 
     const {
         nombre,
@@ -655,13 +672,135 @@ const [nameMunicipio2, setNameMunicipio2] = useState('');
         window.open(`https://maps.google.com/maps?q=${latitude},${longitude}`, '_blank');
     };
 
-    const goToSellerRequest = () => {
-        if (typeof setMenu === 'function') {
-            setMenu('vendedor');
+    const openSellerModal = () => {
+        setSellerForm({
+            empresa: '',
+            telefono: telefono || '',
+            correo: correo || '',
+            rfc: '',
+            comentarios: ''
+        });
+
+        setSellerErrors({});
+        setShowSellerModal(true);
+    };
+
+    const closeSellerModal = () => {
+        if (sendingSellerRequest) return;
+
+        setShowSellerModal(false);
+        setSellerErrors({});
+    };
+
+    const handleSellerChange = (e) => {
+        const { name, value } = e.target;
+
+        setSellerForm((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+
+        setSellerErrors((prev) => ({
+            ...prev,
+            [name]: undefined
+        }));
+    };
+
+    const validateSellerForm = () => {
+        const newErrors = {};
+
+        if (!String(sellerForm.empresa || '').trim()) {
+            newErrors.empresa = 'Ingresa el nombre de la empresa.';
+        }
+
+        const cleanPhone = onlyNumbers(sellerForm.telefono);
+        if (!cleanPhone) {
+            newErrors.telefono = 'Ingresa un teléfono de contacto.';
+        } else if (cleanPhone.length < 10) {
+            newErrors.telefono = 'El teléfono debe tener al menos 10 dígitos.';
+        }
+
+        if (!String(sellerForm.correo || '').trim()) {
+            newErrors.correo = 'Ingresa un correo de contacto.';
+        }
+
+        setSellerErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const enviarSolicitudVendedor = async () => {
+        if (!validateSellerForm()) {
+            showMessage('Revisa los campos de la solicitud.');
             return;
         }
 
-        showMessage('Solicitud de vendedor disponible próximamente.');
+        try {
+            setSendingSellerRequest(true);
+
+            const response = await HTTP.post('/SolicitarVendedor', {
+                idU,
+                nombre: nombre || '',
+                correoUsuario: correo || '',
+                empresa: String(sellerForm.empresa || '').trim(),
+                telefono: String(sellerForm.telefono || '').trim(),
+                correo: String(sellerForm.correo || '').trim(),
+                rfc: String(sellerForm.rfc || '').trim(),
+                comentarios: String(sellerForm.comentarios || '').trim()
+            });
+
+            const respuesta = response.data;
+
+            if (respuesta === 'SolicitudEnviada' || respuesta?.ok === true) {
+                setShowSellerModal(false);
+                showMessage('Solicitud enviada correctamente. Te contactaremos pronto.');
+                return;
+            }
+
+            if (respuesta === 'FaltaEmpresa') {
+                setSellerErrors((prev) => ({
+                    ...prev,
+                    empresa: 'Ingresa el nombre de la empresa.'
+                }));
+                return;
+            }
+
+            if (respuesta === 'FaltaTelefono') {
+                setSellerErrors((prev) => ({
+                    ...prev,
+                    telefono: 'Ingresa un teléfono de contacto.'
+                }));
+                return;
+            }
+
+            if (respuesta === 'FaltaCorreo') {
+                setSellerErrors((prev) => ({
+                    ...prev,
+                    correo: 'Ingresa un correo de contacto.'
+                }));
+                return;
+            }
+
+            if (respuesta === 'ErrorCorreo') {
+                showMessage('No se pudo enviar el correo al administrador. Revisa el servidor.');
+                return;
+            }
+
+            showMessage(
+                typeof respuesta === 'string'
+                    ? respuesta
+                    : 'No se pudo enviar la solicitud.'
+            );
+        } catch (error) {
+            console.error('Error al enviar solicitud de vendedor:', error);
+            showMessage('No se pudo enviar la solicitud. Intenta nuevamente.');
+        } finally {
+            setSendingSellerRequest(false);
+        }
+    };
+
+    const goToSellerRequest = () => {
+        openSellerModal();
     };
 
     return (
@@ -795,10 +934,10 @@ const [nameMunicipio2, setNameMunicipio2] = useState('');
                                 </div>
 
                                 <div style={styles.infoItem}>
-                                <div style={styles.infoLabel}>Municipio</div>
-<div style={styles.infoValue}>
-    {nameMunicipio || 'Sin municipio'}
-</div>
+                                    <div style={styles.infoLabel}>Municipio</div>
+                                    <div style={styles.infoValue}>
+                                        {nameMunicipio || 'Sin municipio'}
+                                    </div>
                                 </div>
 
                                 <div style={styles.infoItem}>
@@ -979,15 +1118,15 @@ const [nameMunicipio2, setNameMunicipio2] = useState('');
                                             </Col>
 
                                             <Col md={8}>
-                                            <EstadoMunicipioSelector
-    estado={estado}
-    setEstado={setEstado}
-    municipio={municipio}
-    setMunicipio={setMunicipio}
-    label=""
-    setNameEstado={setNameEstado}
-    setNameMunicipio={setNameMunicipio}
-/>
+                                                <EstadoMunicipioSelector
+                                                    estado={estado}
+                                                    setEstado={setEstado}
+                                                    municipio={municipio}
+                                                    setMunicipio={setMunicipio}
+                                                    label=""
+                                                    setNameEstado={setNameEstado}
+                                                    setNameMunicipio={setNameMunicipio}
+                                                />
 
                                                 {(errors.estado || errors.municipio) && (
                                                     <div className="text-danger small mt-2">
@@ -1089,15 +1228,15 @@ const [nameMunicipio2, setNameMunicipio2] = useState('');
                                                 </Col>
 
                                                 <Col md={8}>
-                                                <EstadoMunicipioSelector
-    estado={estado2}
-    setEstado={setEstado2}
-    municipio={municipio2}
-    setMunicipio={setMunicipio2}
-    label="Facturación"
-    setNameEstado={setNameEstado2}
-    setNameMunicipio={setNameMunicipio2}
-/>
+                                                    <EstadoMunicipioSelector
+                                                        estado={estado2}
+                                                        setEstado={setEstado2}
+                                                        municipio={municipio2}
+                                                        setMunicipio={setMunicipio2}
+                                                        label="Facturación"
+                                                        setNameEstado={setNameEstado2}
+                                                        setNameMunicipio={setNameMunicipio2}
+                                                    />
 
                                                     {(errors.estado2 || errors.municipio2) && (
                                                         <div className="text-danger small mt-2">
@@ -1292,6 +1431,183 @@ const [nameMunicipio2, setNameMunicipio2] = useState('');
                         </Row>
                     </Col>
                 </Row>
+
+                <Modal
+                    show={showSellerModal}
+                    onHide={closeSellerModal}
+                    centered
+                    size="lg"
+                >
+                    <Modal.Header closeButton={!sendingSellerRequest}>
+                        <Modal.Title>
+                            Convertirse en vendedor
+                        </Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <Alert variant="light" className="border rounded-4">
+                            <div className="d-flex align-items-start">
+                                <div className="fs-3 me-3 text-warning">
+                                    <i className="bi bi-shop-window" />
+                                </div>
+
+                                <div>
+                                    <strong>Solicitud para vender en BA-MRO</strong>
+                                    <div className="text-muted small mt-1">
+                                        Completa la información de tu empresa. El administrador revisará tu solicitud y se pondrá en contacto contigo.
+                                    </div>
+                                </div>
+                            </div>
+                        </Alert>
+
+                        <Form>
+                            <Row className="g-3">
+                                <Col md={6}>
+                                    <Form.Group>
+                                        <Form.Label className="fw-semibold">
+                                            Nombre de la empresa *
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="empresa"
+                                            value={sellerForm.empresa}
+                                            onChange={handleSellerChange}
+                                            placeholder="Ej. Badger Automation"
+                                            isInvalid={!!sellerErrors.empresa}
+                                            style={styles.formControl}
+                                            disabled={sendingSellerRequest}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            {sellerErrors.empresa}
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+                                </Col>
+
+                                <Col md={6}>
+                                    <Form.Group>
+                                        <Form.Label className="fw-semibold">
+                                            Teléfono de contacto *
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="telefono"
+                                            value={sellerForm.telefono}
+                                            onChange={(e) => {
+                                                const cleanValue = onlyNumbers(e.target.value).slice(0, 10);
+
+                                                setSellerForm((prev) => ({
+                                                    ...prev,
+                                                    telefono: cleanValue
+                                                }));
+
+                                                setSellerErrors((prev) => ({
+                                                    ...prev,
+                                                    telefono: undefined
+                                                }));
+                                            }}
+                                            placeholder="10 dígitos"
+                                            isInvalid={!!sellerErrors.telefono}
+                                            style={styles.formControl}
+                                            disabled={sendingSellerRequest}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            {sellerErrors.telefono}
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+                                </Col>
+
+                                <Col md={6}>
+                                    <Form.Group>
+                                        <Form.Label className="fw-semibold">
+                                            Correo de contacto *
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="email"
+                                            name="correo"
+                                            value={sellerForm.correo}
+                                            onChange={handleSellerChange}
+                                            placeholder="correo@empresa.com"
+                                            isInvalid={!!sellerErrors.correo}
+                                            style={styles.formControl}
+                                            disabled={sendingSellerRequest}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            {sellerErrors.correo}
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+                                </Col>
+
+                                <Col md={6}>
+                                    <Form.Group>
+                                        <Form.Label className="fw-semibold">
+                                            RFC
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="rfc"
+                                            value={sellerForm.rfc}
+                                            onChange={handleSellerChange}
+                                            placeholder="Opcional"
+                                            style={styles.formControl}
+                                            disabled={sendingSellerRequest}
+                                        />
+                                    </Form.Group>
+                                </Col>
+
+                                <Col md={12}>
+                                    <Form.Group>
+                                        <Form.Label className="fw-semibold">
+                                            Comentarios
+                                        </Form.Label>
+                                        <Form.Control
+                                            as="textarea"
+                                            rows={4}
+                                            name="comentarios"
+                                            value={sellerForm.comentarios}
+                                            onChange={handleSellerChange}
+                                            placeholder="Cuéntanos qué productos quieres vender, marcas, categorías o cualquier detalle importante..."
+                                            style={styles.formControl}
+                                            disabled={sendingSellerRequest}
+                                        />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                        </Form>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button
+                            variant="secondary"
+                            onClick={closeSellerModal}
+                            disabled={sendingSellerRequest}
+                        >
+                            Cancelar
+                        </Button>
+
+                        <Button
+                            variant="warning"
+                            className="fw-bold"
+                            onClick={enviarSolicitudVendedor}
+                            disabled={sendingSellerRequest}
+                        >
+                            {sendingSellerRequest ? (
+                                <>
+                                    <Spinner
+                                        size="sm"
+                                        animation="border"
+                                        className="me-2"
+                                    />
+                                    Enviando...
+                                </>
+                            ) : (
+                                <>
+                                    <i className="bi bi-send-fill me-2" />
+                                    Enviar solicitud
+                                </>
+                            )}
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
 
                 <Noti notiCarrito={notiCarrito} activeNoti={activeNoti} />
             </Container>
